@@ -1,0 +1,66 @@
+/**
+ * Foodnet trading network
+ */
+namespace org.food.net
+
+asset Pangan identified by panganId {
+  o String panganId
+  o String panganNama
+  o String panganDeskripsi
+  o Integer jumlah
+  o Double totalKg
+  o DateTime originTimestamp
+  
+  --> Partisipan pemilik
+  --> MerekDagang merekDagang optional
+  --> PanganRetail[] panganRetail optional
+}
+
+asset PanganRetail identified by panganRetailId {
+  o String panganRetailId
+  
+  --> Partisipan distributorPangan
+}
+
+asset MerekDagang identified by merekDagangId {
+  o String merekDagangId
+  o String namaMerek
+  
+  --> Partisipan pemilikMerekDagang
+}
+
+asset Review identified by reviewId {
+  o String reviewId
+  o Integer kualitas
+  
+  --> Konsumen rater
+}
+
+abstract participant Partisipan identified by partisipanId {
+  o String partisipanId
+  o String lokasi
+}
+
+participant Petani extends Partisipan {
+  o String namaDepan
+  o String namaBelakang
+}
+
+participant Distributor extends Partisipan {
+  o String namaDistributor
+}
+
+participant Konsumen identified by konsumenId {
+  o String konsumenId
+  o String namaDepan
+  o String namaBelakang
+}
+
+transaction Trade {
+  --> Pangan pangan
+  --> Partisipan pemilikBaru
+}
+
+transaction Distribusi {
+  --> Pangan pangan
+}
